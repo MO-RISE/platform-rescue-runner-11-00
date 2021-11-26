@@ -1,0 +1,55 @@
+version: '3'
+services:
+  NMEA0183_YD02_1:
+    # YDEN-02 Gateway no 1
+    image: ghcr.io/mo-rise/cluon-nmea0183:v0.5.0
+    restart: always
+    network_mode: "host"
+    command: "--cid 111 --id 1 --udp -a 255.255.255.255 -p 1466"
+  NMEA0183_YD02_2:
+    # YDEN-02 Gateway no 2
+    image: ghcr.io/mo-rise/cluon-nmea0183:v0.5.0
+    restart: always
+    network_mode: "host"
+    command: "--cid 111 --id 2 --udp -a 255.255.255.255 -p 1456"
+
+  NMEA2000_YD02_1:
+    # YDEN-02 Gateway no 1
+    image: ghcr.io/mo-rise/cluon-nmea2000:v0.3.0
+    restart: always
+    network_mode: "host"
+    command: "--cid 111 --id 1 --udp -a 255.255.255.255 -p 1467"
+  NMEA2000_YD02_2:
+    # YDEN-02 Gateway no 2
+    image: ghcr.io/mo-rise/cluon-nmea2000:v0.3.0
+    restart: always
+    network_mode: "host"
+    command: "--cid 111 --id 2 --udp -a 255.255.255.255 -p 1457"
+
+  LWE450_1:
+    # TGTD transmission group
+    image: ghcr.io/mo-rise/cluon-lwe450:v0.3.0
+    restart: always
+    network_mode: "host"
+    command: "--cid 111 --id 60002 -a 239.192.0.2 -p 60002 -f 10.0.0.20"
+  LWE450_2:
+    # SATD transmission group
+    image: ghcr.io/mo-rise/cluon-lwe450:v0.3.0
+    restart: always
+    network_mode: "host"
+    command: "--cid 111 --id 60003 -a 239.192.0.3 -p 60003 -f 10.0.0.20"
+  LWE450_3:
+    # RTCM over LWE
+    image: ghcr.io/mo-rise/cluon-lwe450:v0.3.0
+    restart: always
+    network_mode: "host"
+    command: "--cid 111 --id 60031 -a 239.192.0.31 -p 60031 -f 10.0.0.20"
+
+  recorder:
+    image: chrberger/cluon-record-multi:v0.0.1
+    restart: always
+    network_mode: "host"
+    volumes:
+      - /opt/sealog/recordings:/recordings
+    working_dir: /recordings
+    command: "--cid=111 --recsuffix=_sealog"
