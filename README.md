@@ -1,4 +1,4 @@
-# platform-11-00
+# platform-rescue-runner-11-00
 
 Configuration for SSRS rescue runner 11-00
 
